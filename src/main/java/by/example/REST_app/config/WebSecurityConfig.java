@@ -19,8 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .antMatcher("/**")
                 .authorizeRequests()
-                .mvcMatchers("/").permitAll()
+                .mvcMatchers("/", "/login**", "/js/**", "/error**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
@@ -28,16 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PrincipalExtractor principalExtractor(UserDetailsRepo userDetailsRepo) {
-        return map -> {
-            String id = (String) map.get("sub");
+        return x -> {
+            String id = (String) x.get("sub");
             User user = userDetailsRepo.findById(id).orElseGet(() -> {
                 User newUser = new User();
                 newUser.setId(id);
-                newUser.setName((String) map.get("name"));
-                newUser.setEmail((String) map.get("email"));
-                newUser.setGender((String) map.get("gender"));
-                newUser.setLocale((String) map.get("locale"));
-                newUser.setUserpic((String) map.get("picture"));
+                newUser.setName((String) x.get("name"));
+                newUser.setEmail((String) x.get("email"));
+                newUser.setGender((String) x.get("gender"));
+                newUser.setLocale((String) x.get("locale"));
+                newUser.setUserpic((String) x.get("picture"));
                 return newUser;
             });
             user.setLastVisit(LocalDateTime.now());
