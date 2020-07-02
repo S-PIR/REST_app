@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/", "/login**", "/js/**", "/error**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout().permitAll()
+                .logout().logoutSuccessUrl("/").permitAll()
                 .and()
                 .csrf().disable();
     }
