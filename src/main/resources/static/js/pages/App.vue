@@ -36,7 +36,7 @@
             return{
                 messages: frontendData.messages,
                 profile: frontendData.profile,
-                logout: mdiExitToApp
+                logout: mdiExitToApp,
             }
         },
 
@@ -55,7 +55,5 @@
 
 
 <style>
-    .main-app{
-        color: maroon;
-    }
+
 </style>
