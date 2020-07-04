@@ -7,28 +7,23 @@
         <v-card-actions >
             <v-btn value="Edit" @click="edit" small text rounded>Edit</v-btn>
             <v-btn icon @click="del" small >
-                <v-icon>{{ remove }}</v-icon>
+                <v-icon>delete</v-icon>
             </v-btn>
         </v-card-actions>
     </v-card>
 </template>
 
 <script>
-    import { mdiDelete } from '@mdi/js'
-
+    import {mapActions} from 'vuex'
     export default {
-        props: ['message', 'editMessage', 'deleteMessage', 'messages'],
-        data() {
-            return {
-                remove: mdiDelete,
-            }
-        },
+        props: ['message', 'editMessage'],
         methods: {
+            ...mapActions(['removeMessageAction']),
             edit() {
                 this.editMessage(this.message)
             },
             del() {
-                this.deleteMessage(this.message)
+                this.removeMessageAction(this.message)
             }
         }
     }

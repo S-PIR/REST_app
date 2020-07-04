@@ -3,7 +3,7 @@
         <v-text-field
                 label="New message"
                 placeholder="Write something"
-                v-model="text" />
+                v-model="text"/>
         <v-btn @click="save" >
             Save
         </v-btn>
@@ -11,10 +11,10 @@
 </template>
 
 <script>
-    import {sendMessage} from "util/ws";
+    import { mapActions } from 'vuex'
 
     export default {
-        props: ['messages', 'messageAttr'],
+        props: ['messageAttr'],
         data() {
             return {
                 text: '',
@@ -28,8 +28,17 @@
             }
         },
         methods: {
+            ...mapActions(['addMessageAction', 'updateMessageAction']),
             save() {
-                sendMessage({id: this.id, text: this.text})
+                const message = {
+                    id: this.id,
+                    text: this.text
+                }
+                if (this.id) {
+                    this.updateMessageAction(message)
+                } else {
+                    this.addMessageAction(message)
+                }
                 this.text = ''
                 this.id = ''
             }
