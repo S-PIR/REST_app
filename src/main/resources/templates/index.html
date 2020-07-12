@@ -11,7 +11,7 @@
     <title>Messages</title>
        <script th:inline="javascript">
            let frontendData = [[${frontendData}]]
-           let messages = [# th:utext="${messages}" /]
+           let messages = JSON.parse([[${messages}]])
        </script>
 </head>
 <body>
