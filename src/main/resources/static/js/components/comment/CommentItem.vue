@@ -1,10 +1,10 @@
 
 <template>
-    <v-list-tile>
-        <v-list-tile-content>
-            <v-list-tile-title>{{comment.text}}</v-list-tile-title>
-        </v-list-tile-content>
-    </v-list-tile>
+    <v-list-item>
+        <v-list-item-content>
+            <v-list-item-title>{{comment.text}}</v-list-item-title>
+        </v-list-item-content>
+    </v-list-item>
 </template>
 
 <script>
