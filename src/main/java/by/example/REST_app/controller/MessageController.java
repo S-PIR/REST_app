@@ -54,7 +54,9 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message create(@RequestBody Message message) throws IOException {
+    public Message create(
+            @RequestBody Message message,
+            @AuthenticationPrincipal User user) throws IOException {
         message.setCreationDate(LocalDateTime.now());
         fillMeta(message);
         Message updatedMessage = this.messageRepo.save(message);
@@ -64,7 +66,7 @@ public class MessageController {
 
     @PutMapping("{id}")
     public Message update(@PathVariable("id") Message messageFromDb,
-                          @RequestBody Message message) throws IOException {
+                          @RequestBody Message message) {
 
         BeanUtils.copyProperties(message, messageFromDb, "id");
         fillMeta(messageFromDb);
