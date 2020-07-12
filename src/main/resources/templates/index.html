@@ -10,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <title>Messages</title>
        <script th:inline="javascript">
-           let frontendData = [[${frontendData}]];
+           let frontendData = [[${frontendData}]]
+           let messages = [# th:utext="${messages}" /]
        </script>
 </head>
 <body>
