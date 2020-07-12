@@ -1,6 +1,7 @@
 package by.example.REST_app.controller;
 
 import by.example.REST_app.domain.Message;
+import by.example.REST_app.domain.User;
 import by.example.REST_app.domain.Views;
 import by.example.REST_app.dto.EventType;
 import by.example.REST_app.dto.MetaDto;
@@ -14,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -59,6 +61,7 @@ public class MessageController {
             @AuthenticationPrincipal User user) throws IOException {
         message.setCreationDate(LocalDateTime.now());
         fillMeta(message);
+        message.setAuthor(user);
         Message updatedMessage = this.messageRepo.save(message);
         wsSender.accept(EventType.CREATE, updatedMessage);
         return updatedMessage;
@@ -66,7 +69,7 @@ public class MessageController {
 
     @PutMapping("{id}")
     public Message update(@PathVariable("id") Message messageFromDb,
-                          @RequestBody Message message) {
+                          @RequestBody Message message) throws IOException {
 
         BeanUtils.copyProperties(message, messageFromDb, "id");
         fillMeta(messageFromDb);
