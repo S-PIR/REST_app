@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("message")
 public class MessageController {
-    private static String URL_PATTERN = "https?:\\/\\/?[\\w\\d\\._\\%-\\/\\?=&#]+";
+    private static String URL_PATTERN = "https?:\\/\\/?[\\w\\d\\._\\-%\\/\\?=&#]+";
     private static String IMAGE_PATTERN = "\\.(jpeg|jpg|gif|png)$";
 
     private static Pattern URL_REGEX = Pattern.compile(URL_PATTERN, Pattern.CASE_INSENSITIVE);
@@ -58,23 +58,29 @@ public class MessageController {
     @PostMapping
     public Message create(
             @RequestBody Message message,
-            @AuthenticationPrincipal User user) throws IOException {
+            @AuthenticationPrincipal User user
+    ) throws IOException {
         message.setCreationDate(LocalDateTime.now());
         fillMeta(message);
         message.setAuthor(user);
-        Message updatedMessage = this.messageRepo.save(message);
+        Message updatedMessage = messageRepo.save(message);
+
         wsSender.accept(EventType.CREATE, updatedMessage);
+
         return updatedMessage;
     }
 
     @PutMapping("{id}")
-    public Message update(@PathVariable("id") Message messageFromDb,
-                          @RequestBody Message message) throws IOException {
-
+    public Message update(
+            @PathVariable("id") Message messageFromDb,
+            @RequestBody Message message
+    ) throws IOException {
         BeanUtils.copyProperties(message, messageFromDb, "id");
         fillMeta(messageFromDb);
         Message updatedMessage = messageRepo.save(messageFromDb);
+
         wsSender.accept(EventType.UPDATE, updatedMessage);
+
         return updatedMessage;
     }
 
@@ -90,34 +96,38 @@ public class MessageController {
 
         if (matcher.find()) {
             String url = text.substring(matcher.start(), matcher.end());
+
             matcher = IMG_REGEX.matcher(url);
+
             message.setLink(url);
+
             if (matcher.find()) {
                 message.setLinkCover(url);
-            } else if (!url.contains("youtu")){
-                MetaDto metaDto = getMeta(url);
-                message.setLinkTitle(metaDto.getTitle());
-                message.setLinkDescription(metaDto.getDescription());
-                message.setLinkCover(metaDto.getCover());
+            } else if (!url.contains("youtu")) {
+                MetaDto meta = getMeta(url);
+
+                message.setLinkCover(meta.getCover());
+                message.setLinkTitle(meta.getTitle());
+                message.setLinkDescription(meta.getDescription());
             }
         }
     }
 
     private MetaDto getMeta(String url) throws IOException {
         Document doc = Jsoup.connect(url).get();
-        Elements title = doc.select("meta[name$=title], meta[property$=title]");
-        Elements description = doc.select("meta[name$=description], meta[property$=description]");
-        Elements cover = doc.select("meta[name$=image], meta[property$=image]");
+
+        Elements title = doc.select("meta[name$=title],meta[property$=title]");
+        Elements description = doc.select("meta[name$=description],meta[property$=description]");
+        Elements cover = doc.select("meta[name$=image],meta[property$=image]");
+
         return new MetaDto(
                 getContent(title.first()),
                 getContent(description.first()),
                 getContent(cover.first())
         );
-
     }
 
     private String getContent(Element element) {
         return element == null ? "" : element.attr("content");
     }
-
 }

@@ -24,28 +24,25 @@
 <script>
     import YouTube from './YouTube.vue'
     export default {
-        name: "Media",
+        name: 'Media',
         components: { YouTube },
-        props: ["message"],
-        data(){
+        props: ['message'],
+        data() {
             return {
-                type: "href"
+                type: 'href'
             }
         },
         beforeMount() {
             if (this.message.link.indexOf('youtu') > -1) {
                 this.type = 'youtube'
-            } else if (this.message.link.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+            } else if (this.message.link.match(/\.(jpeg|jpg|gif|png)$/) !== null) {
                 this.type = 'image'
             } else {
                 this.type = 'href'
             }
-
         }
-
     }
 </script>
 
 <style scoped>
-
 </style>

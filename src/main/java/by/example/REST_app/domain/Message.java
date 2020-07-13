@@ -1,7 +1,6 @@
 package by.example.REST_app.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -15,18 +14,15 @@ import java.util.List;
 @ToString(of = {"id", "text"})
 @EqualsAndHashCode(of = {"id"})
 @Data
+@JsonIdentityInfo(
+        property = "id",
+        generator = ObjectIdGenerators.PropertyGenerator.class
+)
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Views.Id.class)
     private Long id;
-
-
-
-
-
-
-
     @JsonView(Views.IdName.class)
     private String text;
 
@@ -44,7 +40,6 @@ public class Message {
     @JsonView(Views.FullMessage.class)
     private List<Comment> comments;
 
-
     @JsonView(Views.FullMessage.class)
     private String link;
     @JsonView(Views.FullMessage.class)
@@ -53,7 +48,4 @@ public class Message {
     private String linkDescription;
     @JsonView(Views.FullMessage.class)
     private String linkCover;
-
-
-
 }

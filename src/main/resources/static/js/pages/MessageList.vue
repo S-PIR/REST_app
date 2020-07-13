@@ -5,7 +5,7 @@
             <message-row v-for="message in sortedMessages"
                          :key="message.id"
                          :message="message"
-                         :editMessage="editMessage"/>
+                         :editMessage="editMessage" />
         </v-layout>
     </v-container>
 </template>
@@ -14,7 +14,6 @@
     import { mapGetters } from 'vuex'
     import MessageRow from 'components/messages/MessageRow.vue'
     import MessageForm from 'components/messages/MessageForm.vue'
-
     export default {
         components: {
             MessageRow,
@@ -34,7 +33,5 @@
     }
 </script>
 
-
 <style>
-
 </style>

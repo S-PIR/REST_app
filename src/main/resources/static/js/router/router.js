@@ -11,7 +11,6 @@ const routes = [
     { path: '/auth', component: Auth },
     { path: '/profile', component: Profile },
     { path: '*', component: MessagesList },
-
 ]
 
 export default new VueRouter({
