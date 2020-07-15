@@ -18,6 +18,7 @@ import java.util.List;
         property = "id",
         generator = ObjectIdGenerators.PropertyGenerator.class
 )
+//@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class)
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
