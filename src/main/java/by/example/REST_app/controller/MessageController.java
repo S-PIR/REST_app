@@ -61,5 +61,4 @@ public class MessageController {
     public void delete(@PathVariable("id") Message message) {
         messageService.delete(message);
     }
-
 }

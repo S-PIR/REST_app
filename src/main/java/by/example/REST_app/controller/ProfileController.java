@@ -21,20 +21,20 @@ public class ProfileController {
 
     @GetMapping("{id}")
     @JsonView(Views.FullProfile.class)
-    public User get(@PathVariable("{id}") User user){
+    public User get(@PathVariable("id") User user) {
         return user;
     }
 
-    @PostMapping("/change-subscription/{channelId}")
+    @PostMapping("change-subscription/{channelId}")
     @JsonView(Views.FullProfile.class)
-    public User changeSubscription(@AuthenticationPrincipal User subscriber,
-                                   @PathVariable("channelId") User channel) {
+    public User changeSubscription(
+            @AuthenticationPrincipal User subscriber,
+            @PathVariable("channelId") User channel
+    ) {
         if (subscriber.equals(channel)) {
             return channel;
         } else {
             return profileService.changeSubscription(channel, subscriber);
         }
     }
-
-
 }

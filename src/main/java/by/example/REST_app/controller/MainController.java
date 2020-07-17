@@ -40,6 +40,7 @@ public class MainController {
 
         ObjectMapper objectMapper = mapper
                 .setConfig(mapper.getSerializationConfig());
+
         this.messageWriter = objectMapper
                 .writerWithView(Views.FullMessage.class);
         this.profileWriter = objectMapper
@@ -59,12 +60,10 @@ public class MainController {
             model.addAttribute("profile", serializedProfile);
 
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
-            PageRequest pageRequest = PageRequest.of(0, MESSAGES_PER_PAGE, sort);
+            PageRequest pageRequest = PageRequest.of(0, MessageController.MESSAGES_PER_PAGE, sort);
             MessagePageDto messagePageDto = messageService.findAll(pageRequest);
-            System.out.println(messagePageDto);
 
             String messages = messageWriter.writeValueAsString(messagePageDto.getMessages());
-            System.out.println(messages);
 
             model.addAttribute("messages", messages);
             data.put("currentPage", messagePageDto.getCurrentPage());

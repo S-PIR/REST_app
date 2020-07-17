@@ -3,6 +3,7 @@ package by.example.REST_app.domain;
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "usr")
 @Data
+@ToString(of = {"id", "name"})
 @EqualsAndHashCode(of = { "id" })
 public class User implements Serializable {
     @Id
