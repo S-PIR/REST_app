@@ -30,9 +30,12 @@ public class MessageController {
     @GetMapping
     @JsonView(Views.FullMessage.class)
     public MessagePageDto list(
-            @PageableDefault(size = MESSAGES_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
+            @PageableDefault(size = MESSAGES_PER_PAGE, sort = { "id" },
+                    direction = Sort.Direction.DESC) Pageable pageable,
+            @AuthenticationPrincipal User user
+
     ) {
-        return messageService.findAll(pageable);
+        return messageService.findForUsers(pageable, user);
     }
 
     @GetMapping("{id}")

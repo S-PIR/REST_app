@@ -6,7 +6,6 @@ import by.example.REST_app.service.ProfileService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
